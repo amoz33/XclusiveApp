@@ -1,0 +1,46 @@
+Namecheap Login
+
+Username: joeblazzars
+Password: Toluwalashe12345@
+
+
+app.xclusiveafrikstyles.com
+admin123
+admin123
+
+https://www.xclusivestylez.com/
+
+
+APP APIs Links
+
+Hairstyles Category
+https://app.xclusiveafrikstyles.com/Auth/hairstyles_category
+
+Hairstyles Images
+https://app.xclusiveafrikstyles.com/Auth/hairstyles_images
+
+Dress Category
+https://app.xclusiveafrikstyles.com/Auth/dresses_category
+
+Dress Images
+https://app.xclusiveafrikstyles.com/Auth/dresses_images
+
+Nails Images
+https://app.xclusiveafrikstyles.com/Auth/nails_images
+
+Mobile App GitHub Token ID
+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
+
+List of App Users (JSON)
+https://app.xclusiveafrikstyles.com/Auth/get_appUsers
+
+https://github.com/itzpradip/react-navigation-v6-mix
+
+MATERIAL ICONS FOR REACT NATIVE
+https://github.com/oblador/react-native-vector-icons/blob/master/glyphmaps/MaterialCommunityIcons.json
+
+APP CHALLENGE
+
+Do you know how the Inventory App works (https://fjscstore.com/login) - we shall be using it for the APP challenge. Study it and then fill the APP Challenge form with it. We shall rebrand it as KATALOG. We shall use Timi's Email to feel the form. // You will have to work together with him so that he's in the loop of what we are doing. Any aspect of the form you dont know what to do, let me know
+
+U: assymuhd@gmail.com P:111111
