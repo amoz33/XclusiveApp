@@ -4,7 +4,7 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, Button, ActivityIndicator } from 'react-native';
 import { LogBox } from 'react-native';
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 //import * as React from 'react';
 
 import { 
@@ -27,24 +27,21 @@ import RootStackScreen from './src/screens/RootStackScreen';
 import DrawerStackScreen from './src/screens/DrawerStackScreen';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
-//import {AsyncStorage} from 'react-native';
-
-const AuthContext = React.createContext();
+import useDataLayer from "./src/context/Provider";
+import { navigationRef } from "./src/routing/RootNavigation";
+import { LOGIN_FAIL, LOGIN_USER } from "./src/constants/actionTypes";
 
 //LogBox.ignoreLogs(['Setting a timer'])
 LogBox.ignoreLogs(['Warning: Async Storage has been extracted from react-native core']);
 LogBox.ignoreLogs(['Warning: React.jsx: type is invalid -- expected a string']);
+LogBox.ignoreLogs(['Error: VirtualizedLists should never be nested inside plain ScrollViews']);
+
 
 const App = () => {
 
   const [isDarkTheme, setIsDarkTheme] = React.useState(false);
 
-  const initialLoginState = {
-    isLoading: true,
-    email: null,
-    password: null,
-  };
-
+ 
   const CustomDefaultTheme = {
     ...NavigationDefaultTheme,
     ...PaperDefaultTheme,
@@ -67,91 +64,80 @@ const App = () => {
     }
   }
 
-  const theme = isDarkTheme ? CustomDarkTheme : CustomDefaultTheme;
+ const theme = isDarkTheme ? CustomDarkTheme : CustomDefaultTheme;
 
 
-  const loginReducer = (prevState, action) => {
-    switch( action.type ) {
-      case 'RETRIEVE_PASSWORD': 
-        return {
-          ...prevState,
-          password: action.password,
-          isLoading: false,
-        };
-      case 'LOGIN': 
-        return {
-          ...prevState,
-          email: action.email,
-          password: action.password,
-          isLoading: false,
-        };
-      case 'LOGOUT': 
-        return {
-          ...prevState,
-          email: null,
-          password: null,
-          isLoading: false,
-        };
-      case 'REGISTER': 
-        return {
-          ...prevState,
-          email: action.email,
-          password: action.password,
-          isLoading: false,
-        };
+ const { loginState, dispatch } = useDataLayer()
+
+  const clearAsyn = async () => {
+    try {
+      await AsyncStorage.removeItem('userId');
+      await AsyncStorage.removeItem('userToken');
+      return true;
     }
-  };
-
-  const [loginState, dispatch] = React.useReducer(loginReducer, initialLoginState);
-
-  const authContext = React.useMemo(() => ({
-    signIn: async(foundUser) => {
-      // setUserToken('fgkj');
-      // setIsLoading(false);
-      const password = String(foundUser[0].password);
-      const email = foundUser[0].email;
-      
-      try {
-        await AsyncStorage.setItem('password', password);
-      } catch(e) {
-        console.log(e);
-      }
-      // console.log('user password: ', password);
-      dispatch({ type: 'LOGIN', email: email, password: password });
-    },
-    signOut: async() => {
-      // setUserToken(null);
-      // setIsLoading(false);
-      try {
-        await AsyncStorage.removeItem('password');
-      } catch(e) {
-        console.log(e);
-      }
-      dispatch({ type: 'LOGOUT' });
-    },
-    signUp: () => {
-      // setUserToken('fgkj');
-      // setIsLoading(false);
-    },
-    toggleTheme: () => {
-      setIsDarkTheme( isDarkTheme => !isDarkTheme );
+    catch (e) {
+      return false;
     }
-  }), []);
+  }
 
-  useEffect(() => {
-    setTimeout(async() => {
-      // setIsLoading(false);
-      let password;
-      password = null;
-      try {
-        password = await AsyncStorage.getItem('password');
-      } catch(e) {
-        console.log(e);
-      }
-      // console.log('user password: ', password);
-      dispatch({ type: 'RETRIEVE_PASSWORD', password: password });
-    }, 1000);
+  const authLogin = async () => {
+    let userToken = null, userid = '', userData = [];
+
+    try {
+      userToken = await AsyncStorage.getItem('userToken');
+      userid = await AsyncStorage.getItem('userId');
+
+    } catch (e) {
+      console.log(e);
+    }
+
+
+    //fetch user data if asyndata is not null
+    if (userToken !== null) {
+      fetch("https://app.xclusiveafrikstyles.com/Auth/get_appUser", {
+        method: "post",
+        header: {
+          Accept: "application/json",
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify({
+          id: userid,
+        }),
+      })
+        .then((response) => response.json())
+        .then((responseJson) => {
+
+          userData = responseJson;
+
+          if (responseJson == "Wrong Login Details, Please Try Again") {
+            //clearAsyn()
+
+            alert("Wrong Login Details, Please Try Again");
+          } else if (responseJson == "try again") {
+            dispatch({ type: LOGIN_FAIL });
+          } else {
+            //alert("Successfully Login");
+            //console.log('User Data after login with AsynStorage', userData);
+            dispatch({ type: LOGIN_USER, data: userData, token: userToken });
+            // console.log('keyId:', keyId)
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+
+
+    } else {
+      dispatch({ type: LOGIN_FAIL });
+    }
+
+  }
+
+  React.useEffect(() => {
+    authLogin()
+    //setTimeout(, 1000);
   }, []);
+
 
   if( loginState.isLoading ) {
     return(
@@ -163,16 +149,14 @@ const App = () => {
 
   return (
     <PaperProvider theme={theme}>
-      <AuthContext.Provider value={authContext}>
         <NavigationContainer theme={theme}>
-          { loginState.isLoading !== null ? (
+          { loginState.userToken !== null ? (
               <DrawerStackScreen/>
             )
           :
               <RootStackScreen/>
           }
         </NavigationContainer>
-      </AuthContext.Provider>
     </PaperProvider>
   );
 

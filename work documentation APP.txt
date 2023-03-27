@@ -1,7 +1,7 @@
 Namecheap Login
 
 Username: joeblazzars
-Password: Toluwalashe12345@
+Password: Olanrewaju12345@
 
 
 app.xclusiveafrikstyles.com
@@ -10,6 +10,41 @@ admin123
 
 https://www.xclusivestylez.com/
 
+My keystore password
+joeblazzars
+
+keyalias
+-alias (mykeyapp)
+
+keystore details
+First and Last Name
+Amos Oluwatosin
+Organization Unit
+XclusiveTech
+Organization Name
+XclusiveStyles
+city or locality
+FCT Abuja
+State or Province
+Federal capital Territory
+two-letter country code for this unit
+FC
+
+resource
+https://www.theserverside.com/blog/Coffee-Talk-Java-News-Stories-and-Opinions/Java-Not-Recognized-Error-Fix
+https://stackoverflow.com/questions/66981453/how-can-i-create-keystore-in-android-studio
+
+Youtube
+https://www.youtube.com/watch?v=IRosxRo7R8o
+https://www.youtube.com/watch?v=mBl4nqzhfRU
+
+https://github.com/google/bundletool/releases/tag/1.14.0
+
+Generate Single APK File
+java -jar bundletool.jar build-apks --bundle=xclusiveStyles.aab --output=xclusiveStylesApp.apks --mode=universal --ks=appuser.keystore --ks-key-alias=mykeyapp
+
+Generate Multiple APK Files
+java -jar bundletool.jar build-apks --bundle=xclusiveStyles.aab --output=xclusiveStylesApp.apks --ks=appuser.keystore --ks-key-alias=mykeyapp
 
 APP APIs Links
 
@@ -31,6 +66,8 @@ https://app.xclusiveafrikstyles.com/Auth/nails_images
 Mobile App GitHub Token ID
 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
 
+git remote add origin https://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@github.com/amoz33/XclusiveApp.git
+
 List of App Users (JSON)
 https://app.xclusiveafrikstyles.com/Auth/get_appUsers
 
@@ -44,3 +81,41 @@ APP CHALLENGE
 Do you know how the Inventory App works (https://fjscstore.com/login) - we shall be using it for the APP challenge. Study it and then fill the APP Challenge form with it. We shall rebrand it as KATALOG. We shall use Timi's Email to feel the form. // You will have to work together with him so that he's in the loop of what we are doing. Any aspect of the form you dont know what to do, let me know
 
 U: assymuhd@gmail.com P:111111
+
+expo.dev/login
+
+to check build status
+expo build:status
+
+to generate apk (andriod and ios)
+use `expo build:android` for android
+use `expo build:ios` for ios
+
+
+> npm install -g eas-cli
+› eas build -p android https://docs.expo.dev/build/setup/
+
+expo
+email: amosadex2010@gmail.com
+Username: amosAde33
+Password: adenirandev2023!
+
+apple developer account
+email: amosadex2010@gmail.com
+Password: AmosAdeniran30!
+
+APP DOWNLOAD (APK)
+
+https://expo.dev/artifacts/eas/tmCSLaCHwhTRXwzdwsvdmq.aab
+
+xclusiveStyles.aab
+
+bundletool build-apks --bundle=/AppFiles/xclusiveStyles.aab --output=/AppFiles/xclusiveStyles.apks
+
+java -jar bundletool.jar build-apks --bundle=xclusiveStyles.aab --output=xclusiveStyles.apks
+
+
+openai.com login info
+
+amosadex2010@gmail.com
+devAdeniran30!

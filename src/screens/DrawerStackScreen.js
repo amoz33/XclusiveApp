@@ -40,7 +40,7 @@ const DrawerStackScreen = ({navigation}) => (
                      options={{ title: 'Dresses List' }}
                      />
       <Drawer.Screen name="Nails" component={Nails} />
-      <Drawer.Screen name="ShowImage" component={ShowImage} />
+      <Drawer.Screen name="ShowImage" component={ShowImage}  options={{headerShown: false}}/>
     </Drawer.Navigator>
 );
 

@@ -22,39 +22,44 @@ const HairstylesList = () => {
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([]);
 
-  const categoryList = async (catID) => {
+  //const categoryList = async (props) => {
+    const categoryList = async (catID) => {
   // async function categoryList({ route, navigation }) {
 
-   //const { catID } = route.params;
+   // const  catID  = route.params;
 
-    //const itemID = catID;
+    //const itemID = props.route.params.catID;
     
     //SEND RESPONSE
-    // fetch('https://app.xclusiveafrikstyles.com/Auth/hairstyles_images', {
-    //   method: 'POST',
+    // fetch('https://app.xclusiveafrikstyles.com/Auth/hairstyles_images?category_id='+catID, {
+    //   method: 'GET',
     //   header: {
     //     'Accept': 'application/json',
     //     'Content-Type': 'application/json'
     //   },
-    //   body: JSON.stringify({
-    //     category_id: catID,
-    //   })
+    //   // body: JSON.stringify({
+    //   //   category_id:catID,
+    //   // })
     // })
     // //FETCH RESPONSE
     // .then(response => response.json())
     // .then(responseJson => {
     //   //return json.hairstyles_images;
+    //   // var jsonData = JSON.stringify(responseJson.hairstyles_images);
+    //   // var resultdata = JSON.parse(jsonData);
     //   console.log(responseJson);
-    //   setData(responseJson);
+    //  setData(responseJson);
     // })
     // .catch(error => {
     //   console.error(error);
     // });
     // setLoading(false);
-    //FETCH RESPONSE
+    // //FETCH RESPONSE
     try {
+      //const response = await fetch('https://app.xclusiveafrikstyles.com/Auth/hairstyles_images?category_id='+catID);
       const response = await fetch('https://app.xclusiveafrikstyles.com/Auth/hairstyles_images?category_id='+catID);
       const json =  await response.json();
+      // setData(console.log(json));
       setData(json.hairstyles_images);
     } catch (error) {
       console.error(error);
@@ -76,7 +81,6 @@ const HairstylesList = () => {
       {data ? (
         <FlatList
           numColumns={2}
-        //extraData={data}
           data={data}
           keyExtractor={item => item.id}
           renderItem={({ item }) => (

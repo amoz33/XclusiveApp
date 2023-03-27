@@ -48,7 +48,11 @@ const Hairstyles = () => {
         <FlatList
           data={data}
           keyExtractor={item => item.id}
-          renderItem={({ item }) => (
+          // keyExtractor={(_, index) => index.toString()}
+          //keyExtractor={(item, index) => index.toString()}
+          // extraData={selected}
+          renderItem={({ item }) => ( 
+          // renderItem={({ item, index }) => (
             <>
 
               <View style={styles.container}>
@@ -68,13 +72,19 @@ const Hairstyles = () => {
                       </View>
                   </View>
                   <TouchableOpacity 
+                    // key={index}
                     onPress={() => {
                     /* Navigate to the HairstylesList Screen route with params */
                       navigation.navigate('HairstylesList', {
-                        // catID: item.id,
-                        catID: item.id,
+                        catID:item.id,
                       });
                     }}
+
+                    // onPress={() => { 
+                    //   navigation.navigate('HairstylesList', item.id);
+                    
+                    // }}
+
                   >
                     <Image
                      style={styles.feedImage}

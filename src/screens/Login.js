@@ -22,126 +22,65 @@ import {
   SafeAreaView
 } from "react-native";
 
-//import { AuthContext } from '../components/context';
 
-import Users from '../model/users';
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import useDataLayer from '../context/Provider';
+import { GET_USER_EXPO_TOKEN, LOGIN_USER } from '../constants/actionTypes';
+import login from '../context/action/auth/login';
 
-// const Login = ({ navigation }) => {
+
 const Login = () => {
-
-  const { colors } = useTheme();
 
   const navigation = useNavigation()
 
-  const [data, setData] = useState({
-    email: '',
-    password: '',
+  const { dispatch } = useDataLayer();
 
+  const { colors } = useTheme();
+
+  const [data, setData] = useState({
+    userEmail: '',
+    userPassword: '',
   });
 
-  const setChanges = (myname) => {
-    return (text) => {
-      setData({ ...data, [myname]: text })
+  const saveAsyncData = async (userToken, userId, keyId) => {
+    try {
+      await AsyncStorage.setItem('userToken', userToken);
+      await AsyncStorage.setItem('userId', userId);
+      await AsyncStorage.setItem('keyId', keyId);
+      registerForPushNotificationsAsync(keyId).then((token) => {
+        //update loginState with the token
+        console.log('expo,', token)
+        dispatch({ type: GET_USER_EXPO_TOKEN, token: token })
+      }
+      )
+
+      //alert('Data successfully saved')
+    } catch (e) {
+      //alert('Failed to save the data to the storage')
     }
-
   }
 
-  const [isLoading, setIsLoading] = useState(false);
+  const textEmailChange = (val) => {
+    setData({
+      ...data,
+      userEmail: val,
+    });
+  };
+  //console.log('Email Changing', data.userEmail)
 
-  const RegistrationLoading = () => {
+  const textPasswordChange = (val) => {
+    setData({
+      ...data,
+      userPassword: val,
+    });
+  };
 
-    return (
-      <View style={styles.loading}>
-        <ActivityIndicator size='large' color={colors.backgColor} />
-      </View >
-    )
 
+  const handleLogin = () => {
+    login(data.userEmail, data.userPassword)(dispatch)
+      (saveAsyncData)
   }
 
-  const userLogin = () => {
-
-    setIsLoading(true);
-
-    fetch('https://app.xclusiveafrikstyles.com/Auth/login_appUsers', {
-      method: 'post',
-      header: {
-        'Accept': 'application/json',
-        'Content-type': 'application/json'
-      },
-      body: JSON.stringify({
-        email: data.email,
-        password: data.password,
-      })
-    })
-      .then((response) => response.json())
-      .then((responseJson) => {
-
-        if (responseJson == 'User Logged in Successfully') {
-
-          Alert.alert(
-            'Alert',
-            'User Logged in Successfully',
-            [
-
-              {
-                text: 'OK',
-                //onPress: () => {loginHandle( data.email, data.password ) },
-                onPress: () => navigation.navigate('Home'),
-                style: 'cancel',
-              },
-
-            ],
-            { cancelable: false },
-          );
-        } else {
-          //alert(responseJson);
-          Alert.alert(
-            'Alert',
-            'Invalid Login Details',
-            [
-
-              {
-                text: 'OK',
-                onPress: () => navigation.navigate('Login'),
-                style: 'cancel',
-              },
-
-            ],
-            { cancelable: false },
-          );
-        }
-        setIsLoading(false);
-      })
-
-      .catch((error) => {
-        console.error(error);
-      });
-
-  }
-
-  const AuthContext = React.createContext();
-
-  const loginHandle = (email, password) => {
-
-    const foundUser = Users.filter( item => {
-        return email == item.email && password == item.password;
-    } );
-
-    if ( data.email.length == 0 || data.password.length == 0 ) {
-        Alert.alert('Wrong Input!', 'Email or password field cannot be empty.', [
-            {text: 'Okay'}
-        ]);
-        return;
-    }
-
-    if ( foundUser.length == 0 ) {
-        Alert.alert('Invalid User!', 'Email or password is incorrect.', [
-            {text: 'Okay'}
-        ]);
-        return;
-    }
-    signIn(foundUser);
-  }
 
     return (
 
@@ -189,7 +128,7 @@ const Login = () => {
           />
         </View>
         
-        <TouchableOpacity style = {styles.button} onPress={userLogin}>
+        <TouchableOpacity style = {styles.button} onPress={handleLogin}>
           <Text style = {styles.btntext} >Continue</Text>
         </TouchableOpacity>
 

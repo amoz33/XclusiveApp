@@ -1,25 +1,46 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, Button } from 'react-native';
+import { 
+  StyleSheet, 
+  Text, 
+  View,
+  ImageBackground,
+  Dimensions, } from 'react-native';
 
 import * as React from 'react';
 
-import { CommonActions, useNavigation } from '@react-navigation/native';
+let deviceHeight = Dimensions.get('window').height;
+let deviceWidth = Dimensions.get('window').width;
 
-import Icon from 'react-native-vector-icons/FontAwesome';
 
-const ShowImage = () => {
+const ShowImage = (props) => {
 
-  const navigation = useNavigation()
+const image = {uri: 'https://app.xclusiveafrikstyles.com/uploads/nails/nails5.jpg'};
+  //const navigation = useNavigation()
 
     return (
-      <View style={styles.container}>
-        <Text style={styles.appcolor}>XclusiveStylesApp</Text>
+      <View>
+        {/*<Text style={styles.appcolor}>XclusiveStylesApp</Text>
         <Text style={styles.appcolor2}>This is the ShowImage Page for users</Text>
         <Button
             title="Go to Home Page"
             onPress={() => navigation.navigate('Homepage')}
         />
-        <StatusBar style="auto" />
+        <StatusBar style="auto" />*/}
+
+        <ImageBackground  
+          // source={props.route.params.uri}
+          source={image}
+          style={{
+            height:deviceHeight,
+            width:deviceWidth
+          }}
+
+          // resizeMode="cover"
+
+        />
+
+
+
       </View>
     );
 
@@ -32,7 +53,6 @@ export default ShowImage;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#0D1437',
     alignItems: 'center',
     justifyContent: 'center',
   },
