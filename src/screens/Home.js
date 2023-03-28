@@ -4,6 +4,7 @@ import React, {useEffect, useState} from 'react';
 import { 
   StyleSheet, 
   ScrollView, 
+  SafeAreaView,
   View,
   Text, 
   TouchableOpacity,
@@ -25,9 +26,10 @@ const Home = () => {
 
       return (
 
+        <SafeAreaView style={styles.container} behavior="padding">
         <ScrollView
-            style={{flex: 1}}
-            contentContainerStyle={styles.scrollview}
+            style={{flexGrow: 1}} 
+            nestedScrollEnabled={true}
           >
 
             <View style={styles.container}>
@@ -92,6 +94,7 @@ const Home = () => {
             </View>
 
         </ScrollView>
+        </SafeAreaView>
 
       );
 

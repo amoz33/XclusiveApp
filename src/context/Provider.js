@@ -10,6 +10,7 @@ export const GlobalContext = createContext()
 export const GlobalProvider = ({ children }) => {
   const [loginState, dispatch] = useReducer(loginReducer, initialState);
   const [coursesState, coursesDispatch] = useReducer(coursesReducer, coursesInitialState)
+
   return (
     <GlobalContext.Provider value={{ loginState, dispatch, coursesState, coursesDispatch }}>
       {children}

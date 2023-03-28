@@ -16,9 +16,9 @@ import { CommonActions, useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 
-const Dresses = () => {
+const Dresses = ({navigation}) => {
 
-  const navigation = useNavigation()
+  //const navigation = useNavigation()
 
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([]);

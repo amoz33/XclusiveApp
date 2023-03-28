@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useReducer } from "react";
 import { View, StyleSheet } from 'react-native';
 import {
     useTheme,
@@ -22,13 +22,64 @@ import { CommonActions, useNavigation } from '@react-navigation/native'
 import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-import{ AuthContext } from '../components/context';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+import { 
+    LOGIN_USER,
+    LOGOUT_USER
+ } from '../constants/actionTypes';
 
 export function DrawerContent(props) {
 
     const paperTheme = useTheme();
 
     const navigation = useNavigation()
+
+
+      const loginReducer = (prevState, action) => {
+      switch (action.type) {
+
+       
+        case LOGIN_USER:
+
+          return {
+            ...prevState,
+            userData: action.data,
+            userToken: action.token,
+            isLoading: false,
+          };
+
+        case LOGOUT_USER:
+          return {
+            ...prevState,
+            userEmail: null,
+            userToken: null,
+            isLoading: false,
+          };
+        case REGISTER_USER:
+          return {
+            ...prevState,
+            userEmail: action.id,
+            userToken: action.token,
+            isLoading: false,
+          };
+
+      }
+    };
+
+
+    const { dispatch } = React.useReducer(loginReducer);
+
+    const signOut = async () => {
+        try {
+          await AsyncStorage.removeItem('userToken');
+          await AsyncStorage.removeItem('userId');
+          await AsyncStorage.removeItem('keyId')
+        } catch (e) {
+          console.log(e);
+        }
+        dispatch({ type: LOGOUT_USER });
+    };
 
     //const { signOut, toggleTheme } = React.useContext(AuthContext);
     return(

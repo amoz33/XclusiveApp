@@ -25,14 +25,14 @@ const loginReducer = (prevState, action) => {
     case LOGOUT_USER:
       return {
         ...prevState,
-        userName: null,
+        userEmail: null,
         userToken: null,
         isLoading: false,
       };
     case REGISTER_USER:
       return {
         ...prevState,
-        userName: action.id,
+        userEmail: action.id,
         userToken: action.token,
         isLoading: false,
       };

@@ -18,9 +18,9 @@ import { CommonActions, useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 
-const Nails = (props) => {
+const Nails = ({navigation}) => {
 
-  const navigation = useNavigation()
+  //const navigation = useNavigation()
 
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([]);
@@ -72,15 +72,13 @@ const Nails = (props) => {
                       </View>
                   </View>
                   <TouchableOpacity 
-                    // onPress={() => {
-                    //  Navigate to the HairstylesList Screen route with params 
-                    //   navigation.navigate('ShowImage');
-                    // }}
-
-                    onPress={() => {props.navigation.navigate('ShowImage',
-                      {
-                        uri: imageUrl+item.image_url
-                      })}}
+                    
+                    onPress={() => {
+                    /* Navigate to the Save Screen route with params */
+                      navigation.navigate('ShowImage', {
+                        uri: imageUrl+item.image_url,
+                      });
+                    }}
                   >
                     <Image
                      style={styles.feedImage}
@@ -92,7 +90,7 @@ const Nails = (props) => {
 
                   <View style={styles.cardFooter}>
                     <View style={styles.footerLeft}>
-                        <Text style={styles.imageCount}> View Full Image</Text>
+                        <Text style={styles.imageCount}> Nails Image</Text>
                     </View>
                   </View>
                 </View>

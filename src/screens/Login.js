@@ -22,64 +22,194 @@ import {
   SafeAreaView
 } from "react-native";
 
-
-import AsyncStorage from '@react-native-async-storage/async-storage'
-import useDataLayer from '../context/Provider';
-import { GET_USER_EXPO_TOKEN, LOGIN_USER } from '../constants/actionTypes';
-import login from '../context/action/auth/login';
+//import { AuthContext } from '../components/context';
 
 
+// const Login = ({ navigation }) => {
 const Login = () => {
-
-  const navigation = useNavigation()
-
-  const { dispatch } = useDataLayer();
 
   const { colors } = useTheme();
 
-  const [data, setData] = useState({
-    userEmail: '',
-    userPassword: '',
-  });
+  const navigation = useNavigation()
 
-  const saveAsyncData = async (userToken, userId, keyId) => {
-    try {
-      await AsyncStorage.setItem('userToken', userToken);
-      await AsyncStorage.setItem('userId', userId);
-      await AsyncStorage.setItem('keyId', keyId);
-      registerForPushNotificationsAsync(keyId).then((token) => {
-        //update loginState with the token
-        console.log('expo,', token)
-        dispatch({ type: GET_USER_EXPO_TOKEN, token: token })
-      }
-      )
+  // const [data, setData] = useState({
+  //   email: '',
+  //   password: '',
 
-      //alert('Data successfully saved')
-    } catch (e) {
-      //alert('Failed to save the data to the storage')
+  // });
+
+  const [data, setData] = React.useState({
+        email: '',
+        password: '',
+        check_textInputChange: false,
+        secureTextEntry: true,
+        isValidUser: true,
+        isValidPassword: true,
+    });
+
+  const setChanges = (myname) => {
+    return (text) => {
+      setData({ ...data, [myname]: text })
     }
+
   }
 
-  const textEmailChange = (val) => {
-    setData({
-      ...data,
-      userEmail: val,
-    });
-  };
-  //console.log('Email Changing', data.userEmail)
+  const [isLoading, setIsLoading] = useState(false);
 
-  const textPasswordChange = (val) => {
-    setData({
-      ...data,
-      userPassword: val,
-    });
-  };
+  const RegistrationLoading = () => {
 
+    return (
+      <View style={styles.loading}>
+        <ActivityIndicator size='large' color={colors.backgColor} />
+      </View >
+    )
 
-  const handleLogin = () => {
-    login(data.userEmail, data.userPassword)(dispatch)
-      (saveAsyncData)
   }
+
+
+  const textInputChange = (val) => {
+        if( val.trim().length >= 4 ) {
+            setData({
+                ...data,
+                username: val,
+                check_textInputChange: true,
+                isValidUser: true
+            });
+        } else {
+            setData({
+                ...data,
+                username: val,
+                check_textInputChange: false,
+                isValidUser: false
+            });
+        }
+    }
+
+    const handlePasswordChange = (val) => {
+        if( val.trim().length >= 8 ) {
+            setData({
+                ...data,
+                password: val,
+                isValidPassword: true
+            });
+        } else {
+            setData({
+                ...data,
+                password: val,
+                isValidPassword: false
+            });
+        }
+    }
+
+    const updateSecureTextEntry = () => {
+        setData({
+            ...data,
+            secureTextEntry: !data.secureTextEntry
+        });
+    }
+
+    const handleValidUser = (val) => {
+        if( val.trim().length >= 4 ) {
+            setData({
+                ...data,
+                isValidUser: true
+            });
+        } else {
+            setData({
+                ...data,
+                isValidUser: false
+            });
+        }
+    }
+
+
+  const userLogin = () => {
+
+    setIsLoading(true);
+
+    fetch('https://app.xclusiveafrikstyles.com/Auth/login_appUsers', {
+      method: 'post',
+      header: {
+        'Accept': 'application/json',
+        'Content-type': 'application/json'
+      },
+      body: JSON.stringify({
+        email: data.email,
+        password: data.password,
+      })
+    })
+      .then((response) => response.json())
+      .then((responseJson) => {
+
+        if (responseJson == 'User Logged in Successfully') {
+
+          Alert.alert(
+            'Alert',
+            'User Logged in Successfully',
+            [
+
+              {
+                text: 'OK',
+                //onPress: () => {loginHandle( data.email, data.password ) },
+                //onPress: () => navigation.navigate('Home'),
+                onPress: () => navigation.navigate('AppStackScreen'), 
+                style: 'cancel',
+              },
+
+            ],
+            { cancelable: false },
+          );
+        } else {
+          //alert(responseJson);
+          Alert.alert(
+            'Alert',
+            'Invalid Login Details',
+            [
+
+              {
+                text: 'OK',
+                onPress: () => navigation.navigate('Login'),
+                style: 'cancel',
+              },
+
+            ],
+            { cancelable: false },
+          );
+        }
+        setIsLoading(false);
+      })
+
+      .catch((error) => {
+        console.error(error);
+      });
+
+  }
+
+  const AuthContext = React.createContext();
+  const   signIn   = React.useContext(AuthContext);
+
+  const loginHandle = (email, password) => {
+
+    const foundUser = ( item => {
+        return email == item.email && password == item.password;
+    } );
+
+    if ( data.email.length == 0 || data.password.length == 0 ) {
+        Alert.alert('Wrong Input!', 'Email or password field cannot be empty.', [
+            {text: 'Okay'}
+        ]);
+        return;
+    }
+
+    if ( foundUser.length == 0 ) {
+        Alert.alert('Invalid User!', 'Email or password is incorrect.', [
+            {text: 'Okay'}
+        ]);
+        return;
+    }
+    signIn(foundUser);
+  }
+
 
 
     return (
@@ -127,9 +257,10 @@ const Login = () => {
             onChangeText={setChanges('password')}
           />
         </View>
-        
-        <TouchableOpacity style = {styles.button} onPress={handleLogin}>
-          <Text style = {styles.btntext} >Continue</Text>
+         
+        <TouchableOpacity style = {styles.button} onPress={userLogin}>
+        {/*<TouchableOpacity style = {styles.button} onPress={() => signIn({ email, password })}>*/}
+          <Text style = {styles.btntext} >Login</Text>
         </TouchableOpacity>
 
         <View style={styles.signupTextCont}>

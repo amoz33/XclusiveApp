@@ -3,6 +3,7 @@ import { LOGIN_USER } from "../../../constants/actionTypes";
 
 const login = (userEmail, userPassword) => (dispatch) => (onSuccess) => {
 
+
   let userData = [], userToken = null, userId = '', keyId = '';
 
   let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;

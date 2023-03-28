@@ -15,48 +15,19 @@ import { CommonActions, useNavigation } from '@react-navigation/native';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-const HairstylesList = () => {
+const HairstylesList = ({ route, navigation }) => {
 
-  const navigation = useNavigation()
+  // const navigation = useNavigation()
 
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([]);
 
-  //const categoryList = async (props) => {
-    const categoryList = async (catID) => {
-  // async function categoryList({ route, navigation }) {
+  const  { catID }  = route.params;
 
-   // const  catID  = route.params;
-
-    //const itemID = props.route.params.catID;
-    
-    //SEND RESPONSE
-    // fetch('https://app.xclusiveafrikstyles.com/Auth/hairstyles_images?category_id='+catID, {
-    //   method: 'GET',
-    //   header: {
-    //     'Accept': 'application/json',
-    //     'Content-Type': 'application/json'
-    //   },
-    //   // body: JSON.stringify({
-    //   //   category_id:catID,
-    //   // })
-    // })
-    // //FETCH RESPONSE
-    // .then(response => response.json())
-    // .then(responseJson => {
-    //   //return json.hairstyles_images;
-    //   // var jsonData = JSON.stringify(responseJson.hairstyles_images);
-    //   // var resultdata = JSON.parse(jsonData);
-    //   console.log(responseJson);
-    //  setData(responseJson);
-    // })
-    // .catch(error => {
-    //   console.error(error);
-    // });
-    // setLoading(false);
-    // //FETCH RESPONSE
+  const categoryList = async () => {
+  
+    //FETCH RESPONSE
     try {
-      //const response = await fetch('https://app.xclusiveafrikstyles.com/Auth/hairstyles_images?category_id='+catID);
       const response = await fetch('https://app.xclusiveafrikstyles.com/Auth/hairstyles_images?category_id='+catID);
       const json =  await response.json();
       // setData(console.log(json));
@@ -91,9 +62,9 @@ const HairstylesList = () => {
 
                   <TouchableOpacity 
                     onPress={() => {
-                    /* 1. Navigate to the HairstylesList Screen route with params */
-                      navigation.navigate('HairstylesList', {
-                        category_id: item.id,
+                    /* 1. Navigate to the ShowImage Screen route with params */
+                      navigation.navigate('ShowImage', {
+                        uri: url+item.image_url,
                       });
                     }}
                   >

@@ -15,20 +15,20 @@ import { CommonActions, useNavigation } from '@react-navigation/native';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-const DressesList = () => {
+const DressesList = ({ route, navigation }) => {
 
-  const navigation = useNavigation()
+  //const navigation = useNavigation()
 
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([]);
 
-  const categoryList = async (catID) => {
+  const  { catID }  = route.params;
 
-    const itemID = catID;
-    //const itemID = JSON.stringify(catID);
+  const categoryList = async () => {
 
+    //FETCH RESPONSE
     try {
-      const response = await fetch('https://app.xclusiveafrikstyles.com/Auth/dresses_images?catID='+itemID);
+      const response = await fetch('https://app.xclusiveafrikstyles.com/Auth/dresses_images?category_id='+catID);
       const json =  await response.json();
       setData(json.dresses_images);
     } catch (error) {
@@ -63,9 +63,9 @@ const DressesList = () => {
 
                   <TouchableOpacity 
                     onPress={() => {
-                    /* 1. Navigate to the HairstylesList Screen route with params */
-                      navigation.navigate('DressesList', {
-                        category_id: item.id,
+                    /* 1. Navigate to the ShowImage Screen route with params */
+                      navigation.navigate('ShowImage', {
+                        uri: url+item.image_url,
                       });
                     }}
                   >
