@@ -27,14 +27,16 @@ const Home = () => {
       return (
 
         <SafeAreaView style={styles.container} behavior="padding">
-        <ScrollView
-            style={{flexGrow: 1}} 
-            nestedScrollEnabled={true}
-          >
 
             <View style={styles.container}>
 
+              <ScrollView
+                  style={{flex: 1}}
+                  contentContainerStyle={styles.scrollview}
+                >
+                
               <View style={styles.homelist}>
+
 
                 <View style={styles.cardHeader}>
                   <View style={styles.headerLeft}>
@@ -91,9 +93,10 @@ const Home = () => {
                 </View>
               </View>
 
+              </ScrollView>
+
             </View>
 
-        </ScrollView>
         </SafeAreaView>
 
       );

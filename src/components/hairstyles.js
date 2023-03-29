@@ -4,7 +4,7 @@ import React, {useEffect, useState} from 'react';
 import { 
   StyleSheet, 
   ActivityIndicator, 
-  FlatList, 
+  FlatList,
   Text, 
   View,
   Image,

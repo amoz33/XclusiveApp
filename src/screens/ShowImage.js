@@ -54,10 +54,10 @@ const ShowImage = ({ route, navigation }) => {
   const image = {uri: uri};
 
 
-  const saveImage = async (uri) => {
+  const saveAppImage = async (uri) => {
     try {
       // Request device storage access permission
-      const { status } = await Camera.requestPermissionsAsync(Permissions.MEDIA_LIBRARY);
+      const { status } = await Location.requestForegroundPermissionsAsync();
       const filename = 'appImage';
       if (status === "granted") {
       // Save image to media library
@@ -86,7 +86,7 @@ const ShowImage = ({ route, navigation }) => {
 
       <Image source={image} style={styles.imageStyle} />
 
-      <TouchableOpacity style = {styles.catbutton} onPress={saveImage}>
+      <TouchableOpacity style = {styles.catbutton} onPress={saveAppImage}>
         <Icon name='save' style={styles.styleIcon} />
         <Text style = {styles.btntext} >Save Image</Text>
       </TouchableOpacity>
